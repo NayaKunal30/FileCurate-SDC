@@ -40,51 +40,77 @@ function App() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} transition-colors duration-300`}>
+    <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'} transition-colors duration-300`}>
       <ThreeJSBackground />
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 flex-grow">
+        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex justify-between items-center mb-8"
+          className="flex justify-between items-center mb-8 flex-wrap"
         >
-          <div className="flex items-center space-x-4">
-          <img src={imageUrl} alt="Logo" className="w-12 h-12" /> 
-          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-500">
-            FileCurate
-          </h1>
-          </div>
-          <button
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+            className="flex items-center space-x-4 mb-4 sm:mb-0"
+          >
+            <img src={imageUrl} alt="Logo" className="w-12 h-12" />
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1, duration: 0.6, ease: 'easeOut' }}
+              className="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-500 hover:scale-105 transition-transform"
+            >
+              FileCurate
+            </motion.h1>
+          </motion.div>
+          <motion.button
             onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-colors duration-200"
+            className="p-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-colors duration-200 hover:rotate-45"
+            whileHover={{ scale: 1.1, rotate: 360 }}
+            transition={{ duration: 0.5, type: 'spring' }}
           >
             {darkMode ? <Sun size={24} /> : <Moon size={24} />}
-          </button>
+          </motion.button>
         </motion.div>
-        <div className="flex gap-4">
+
+        {/* Content Section */}
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* File Explorer */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="w-1/3"
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="lg:w-1/3 w-full"
           >
             <FileExplorer
               fileSystem={mockFileSystem}
               onFileSelect={setSelectedFile}
               darkMode={darkMode}
+              className="hover:scale-105 transition-transform duration-300"
             />
           </motion.div>
+
+          {/* Editor */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="w-2/3"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="lg:w-2/3 w-full"
           >
-            <Editor file={selectedFile} darkMode={darkMode} />
+            <Editor file={selectedFile} darkMode={darkMode} className="hover:scale-105 transition-transform duration-300" />
           </motion.div>
         </div>
       </div>
+
+      {/* Footer Section */}
+      <footer className="w-full bg-gray-800 text-white p-4 mt-8 text-center">
+        <p className="text-sm">
+          Made with <span className="text-pink-500">🩷</span> By Kunal | For SDC ( AI-DS B2 2023 )
+        </p>
+      </footer>
     </div>
   );
 }
